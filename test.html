@@ -1,0 +1,19 @@
+<html>
+
+<body>
+  <script>
+    async function getHh(url) {
+      let res = await fetch('https://api.paystack.co/bank/resolve?account_number=9117624342&bank_code=999991', {
+        headers: {
+          'Authorization': 'Bearer sk_test_0bca9d97f8c044cf2468efd3b26a4515cd78db8d'
+        }
+      });
+      let data = await res.json();
+      console.log(data.data.account_name);
+    }
+    
+    getHh('http://localhost:4000/coursesj')
+  </script>
+</body>
+
+</html>
