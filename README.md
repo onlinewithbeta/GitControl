@@ -1,4 +1,4 @@
-# Gitjs
+# GitControl 
 
 to read 
 create
