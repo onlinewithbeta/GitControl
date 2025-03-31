@@ -1,4 +1,4 @@
-    const token = 'API_KEY'; // Replace with your access token
+    const token = 'Api_key'; // Replace with your access token
     const repoOwner = 'onlinewithbeta'; // Replace with your GitHub username or organization
     const repoName = 'TestDatabase';
     
@@ -6,25 +6,33 @@
     
     
     
-    //Read JSON.
-    async function fetchJsonData() {
-      let url = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/John.json`;
-      // Replace with your URL
-      try {
-        let response = await fetch(url);
-        let data = await response.json();
-        // Parse JSON data
-        console.log(data);
-        return data;
-        // Output the data to the console
-      } catch (error) {
-        console.error('Error fetching JSON data:', error);
-      }
-    }
-    document.getElementById('read').addEventListener('click', () => {
-      fetchJsonData();
-    });
+// Read JSON from GitHub
+async function fetchJsonData(file) {
+  const url = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${file}`;
+  
+  try {
+    console.log('Fetching JSON data...');
+    const response = await fetch(url);
     
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return console.log(data);
+
+  } catch (error) {
+    console.error('Error fetching JSON data:', error);
+    throw error; // Re-throw the error if you want to handle it elsewhere
+  }
+}
+
+// Usage example
+document.getElementById('read').addEventListener('click', async () => {
+  fetchJsonData('John.json');
+});
+
+
     
     //Create new json  
     async function createAndUploadJson() {
@@ -68,6 +76,7 @@
       } catch (error) {
         console.error("Error uploading JSON file:", error);
       }
+      fetchJsonData('delete.json')
     }
     // Call the function
     document.getElementById('create').addEventListener('click', () => {
@@ -166,9 +175,9 @@
     
     
     
-       document.getElementById('Delete').addEventListener('click', () => {
+    document.getElementById('Delete').addEventListener('click', () => {
       deleteMySt();
-
+      
     });
     
     
@@ -177,41 +186,37 @@
     
     
     
-async function getRepositoryNames() {
-  try {
-    // Set your GitHub username and personal access token
-    const username = repoOwner;
-
-    // Set the API endpoint URL
-    const url = `https://api.github.com/users/${username}/repos`;
-
-    // Make the API request using fetch()
-    const response = await fetch(url);
-
-    // Check if the response was successful
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    async function getRepositoryNames() {
+      try {
+        // Set your GitHub username and personal access token
+        const username = repoOwner;
+        
+        // Set the API endpoint URL
+        const url = `https://api.github.com/users/${username}/repos`;
+        
+        // Make the API request using fetch()
+        const response = await fetch(url);
+        
+        // Check if the response was successful
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        // Parse the response data as JSON
+        const data = await response.json();
+        
+        // Extract the repository names from the response data
+        const repoNames = data.map(repo => repo.name);
+        
+        // Log the repository names to the console
+        console.log(repoNames);
+      } catch (error) {
+        console.error(error);
+      }
     }
-
-    // Parse the response data as JSON
-    const data = await response.json();
-
-    // Extract the repository names from the response data
-    const repoNames = data.map(repo => repo.name);
-
-    // Log the repository names to the console
-    console.log(repoNames);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// Call the async function
-
-getRepositoryNames();
- 
- 
- 
- 
- 
- 
+    
+    // Call the async function
+    
+    getRepositoryNames();
+    
+  
