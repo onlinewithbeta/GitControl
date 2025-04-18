@@ -3,36 +3,43 @@
     const repoName = 'TestDatabase';
     
     
+    let loading = document.getElementById('loading');
     
     
     
-// Read JSON from GitHub
-async function fetchJsonData(file) {
-  const url = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${file}`;
-  
-  try {
-    console.log('Fetching JSON data...');
-    const response = await fetch(url);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    // Read JSON from GitHub
+    async function fetchJsonData(file) {
+      const url = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${file}`;
+      loading.style = 'display : block';
+      try {
+        console.log('Fetching JSON data...');
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        loading.style = 'display : none';
+        
+        const fk = Object.keys(data)[0];
+        document.getElementById('output').innerHTML = data[fk];
+        return console.log(data);
+        
+      } catch (error) {
+        loading.style = 'display : none';
+        
+        console.error('Error fetching JSON data:', error);
+        throw error; // Re-throw the error if you want to handle it elsewhere
+      }
     }
     
-    const data = await response.json();
-    return console.log(data);
-
-  } catch (error) {
-    console.error('Error fetching JSON data:', error);
-    throw error; // Re-throw the error if you want to handle it elsewhere
-  }
-}
-
-// Usage example
-document.getElementById('read').addEventListener('click', async () => {
-  fetchJsonData('John.json');
-});
-
-
+    // Usage example
+    document.getElementById('read').addEventListener('click', async () => {
+      fetchJsonData('John.json');
+    });
+    
+    
     
     //Create new json  
     async function createAndUploadJson() {
@@ -215,8 +222,3 @@ document.getElementById('read').addEventListener('click', async () => {
       }
     }
     
-    // Call the async function
-    
-    getRepositoryNames();
-    
-  

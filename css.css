@@ -1,0 +1,10 @@
+#loading {
+  position: fixed;
+  top: 30;
+  margin: 4vh auto;
+  height: 30%;
+  width: 40vw;
+  display: none;
+  background: black;
+  color: #fff;
+}
